@@ -1,0 +1,38 @@
+# Import necessary libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load data into DataFrame
+df = pd.read_csv('sales_data.csv')
+
+# Data cleaning
+# Check for missing values
+print(df.isnull().sum())
+
+# Check for duplicates
+print(df.duplicated().sum())
+
+# Check for outliers
+print(df.describe())
+
+# Data analysis
+# Calculate total revenue
+total_revenue = df['Price'].sum()
+print('Total revenue:', total_revenue)
+
+# Calculate average order value
+average_order_value = df.groupby('OrderID')['Price'].sum().mean()
+print('Average order value:', average_order_value)
+
+# Calculate customer lifetime value
+lifetime_value = df.groupby('CustomerID')['Price'].sum().mean()
+print('Customer lifetime value:', lifetime_value)
+
+# Data visualization
+# Plot sales trends over time
+df['Date'] = pd.to_datetime(df['Date'])
+monthly_sales = df.groupby(pd.Grouper(key='Date', freq='M')).sum()
+plt.plot(monthly_sales.index, monthly_sales['Price'])
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.show()
